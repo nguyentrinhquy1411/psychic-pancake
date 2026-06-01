@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from typing import Any, Optional
 
-
 LISTINGS: list[dict[str, Any]] = [
     {
         "id": "R-100",
@@ -56,7 +55,15 @@ LISTINGS: list[dict[str, Any]] = [
     },
 ]
 
-REQUIRED_FIELDS = ("id", "district", "listing_type", "price", "bedrooms", "area_sqm", "available")
+REQUIRED_FIELDS = (
+    "id",
+    "district",
+    "listing_type",
+    "price",
+    "bedrooms",
+    "area_sqm",
+    "available",
+)
 VALID_LISTING_TYPES = {"rent", "sale"}
 
 
@@ -162,8 +169,6 @@ def filter_listings(
     invalid_records: list[dict[str, str]] = []
 
     for record in listings:
-        # Use .get() so we can still retrieve an id for the error report even
-        # when other fields are missing.
         record_id = record.get("id", "<unknown>")
 
         reason = _validate_record(record)
@@ -171,7 +176,9 @@ def filter_listings(
             invalid_records.append({"id": str(record_id), "reason": reason})
             continue
 
-        if not _matches_filters(record, listing_type, max_price, district, min_bedrooms, only_available):
+        if not _matches_filters(
+            record, listing_type, max_price, district, min_bedrooms, only_available
+        ):
             continue
 
         matching_ids.append(record["id"])
@@ -202,9 +209,7 @@ def run_tests() -> None:
     assert result["match_count"] == 1
     assert result["average_price"] == 750
     assert result["counts_by_district"] == {"District 1": 1}
-    assert result["invalid_records"] == [
-        {"id": "BROKEN-1", "reason": "invalid price"}
-    ]
+    assert result["invalid_records"] == [{"id": "BROKEN-1", "reason": "invalid price"}]
 
     sale_result = filter_listings(
         LISTINGS,

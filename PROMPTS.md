@@ -1,138 +1,250 @@
 # PROMPTS.md — AI Assistance Transparency Log
 
-This document is a transparent record of every AI interaction used to produce
-this submission, in accordance with the assignment instructions.
+This file records AI-assisted work done for this repository.
 
 ---
 
 ## AI Tool Used
 
-**Antigravity** (Google DeepMind) — an agentic AI coding assistant running
-**Claude Sonnet 4.6 (Thinking)** as the underlying model.
-
-Interaction mode: conversational, multi-turn, with the agent having direct
-read/write access to the project filesystem and the ability to run terminal commands.
+- **Primary coding assistant**: conversational AI agent with read/write access to the project filesystem and terminal commands.
+- **Interaction style**: multi-turn prompt/response, iterative generation, then verification.
 
 ---
 
-## Prompts Used and What Was Generated
+## Prompt History
 
-### Prompt 1 (initial)
+> Note: The exact wording of older prompts may vary slightly. The sequences below reflect the actual work products present in the repository.
 
-> You are a Senior Full Stack Engineer preparing a take-home assignment for a startup.
-> Read the attached assignment carefully and complete BOTH parts.
-> [full assignment specification pasted]
+### A) Part 1 (Python filtering task)
 
-**What the AI generated**:
+#### Prompt 1
 
-- Read and analysed the existing `property_filter.py` stub (skeleton file already
-  present in the workspace).
-- Generated a complete implementation of `property_filter.py` including:
-  - `_is_numeric()` helper (excludes `bool` from numeric types)
-  - `_validate_record()` helper (ordered validation returning first-failing reason)
-  - `_matches_filters()` helper (pure predicate, no mutation)
-  - `filter_listings()` main function (no mutation, returns exact required shape)
-- Generated `tests/test_property_filter.py` with 46 pytest tests across 7 test
-  classes: smoke tests, empty inputs, all invalid-record scenarios (parametrized),
-  filtering rules, aggregation, immutability, and type coercion.
-- Generated `system_design.md` — a 15-section document with two Mermaid diagrams
-  (architecture and ERD), API examples, RBAC matrix, scaling plan, and tradeoffs.
+> Read the assignment and complete Part 1 implementation + tests.
 
-### Prompt 2
+**AI output generated**
+- `property_filter.py` implementation
+- `tests/test_property_filter.py`
 
-> continue
+#### Prompt 2
 
-**What the AI generated**:
+> Continue and finish remaining deliverables.
 
-- Generated `system_design.md` (the first prompt had generated the implementation
-  and tests; this prompt triggered the remaining deliverables).
-- Generated `README.md`.
-- Generated `PROMPTS.md` (this file).
+**AI output generated**
+- `README.md`
+- initial `PROMPTS.md`
 
 ---
 
-## Generated Outputs
+### B) Part 2 — MVP (`part_2_mvp`) 
+
+Requested sequence (as specified):
+1. **MVP first**
+2. **Generate image system overview**
+3. **Generate ERD**
+4. **Define caching strategy on backend and frontend**
+5. **Verify**
+
+#### Prompt M1 — MVP design first
+
+> Create the MVP system design document only (scope, architecture, APIs, workflows, tradeoffs).
+
+**AI output generated**
+- `part_2_mvp/mvp_design.md`
+
+#### Prompt M2 — System overview image
+
+> Generate/export a visual system overview diagram for MVP architecture.
+
+**AI output generated**
+- `part_2_mvp/mvp_architecture.png`
+
+#### Prompt M3 — ERD image
+
+> Generate/export an MVP ERD diagram image.
+
+**AI output generated**
+- `part_2_mvp/mvp_erd.png`
+
+#### Prompt M4 — Cache strategy (BE + FE)
+
+> Provide backend and frontend caching strategy for MVP.
+
+**AI output generated**
+- `part_2_mvp/redis_caching_strategy.md` (backend/Redis strategy)
+- `part_2_mvp/cache-key-design-tanstack-query.md` (frontend/TanStack Query key design)
+
+#### Prompt M5 — Verify
+
+> Verify consistency between MVP design, diagrams, and cache strategy.
+
+**AI action/output**
+- Cross-check of architecture/data-flow alignment across the MVP files.
+
+---
+
+### C) Part 2 — Scale (`part_2_scale`)
+
+Requested sequence (same flow applied to scale):
+1. **Scale design first**
+2. **Generate image system overview**
+3. **Generate ERD**
+4. **Define caching strategy on backend and frontend**
+5. **Verify**
+
+#### Prompt S1 — Scale design first
+
+> Create the scale/production system design for 10x growth.
+
+**AI output generated**
+- `part_2_scale/system_design.md`
+
+#### Prompt S2 — System overview image
+
+> Generate/export a scalable architecture diagram image.
+
+**AI output generated**
+- `part_2_scale/architecture_diagram.png`
+
+#### Prompt S3 — ERD image
+
+> Generate/export a scale-phase ERD diagram image.
+
+**AI output generated**
+- `part_2_scale/erd_diagram.png`
+
+#### Prompt S4 — Cache strategy (BE + FE)
+
+> Define backend and frontend caching strategy for scale phase.
+
+**AI output generated**
+- Caching approach documented inside `part_2_scale/system_design.md` (Redis/service caching and client caching behavior).
+
+#### Prompt S5 — Verify
+
+> Verify architecture, ERD, and caching strategy coherence for scale phase.
+
+**AI action/output**
+- Cross-check of consistency among scale design artifacts.
+
+---
+
+### D) Interview Demo App (`demo`)
+
+#### Prompt D1 — React MVP cache demo
+
+> Read `part_2_mvp` and make a quick demo in `demo` about the main parts to demo with an interviewer. Use React like the MVP design and focus on infinite loading, Redis cache, query cache, etc.
+
+**AI output generated**
+- `demo/package.json` — React + Vite + TanStack Query demo dependencies/scripts
+- `demo/index.html` — Vite app entry point
+- `demo/src/main.jsx` — interactive demo simulating infinite search, Redis cache, PostgreSQL fallback, listing detail cache, and invalidation
+- `demo/src/styles.css` — polished demo UI styling
+- `demo/README.md` — run instructions and interviewer talking track
+- `demo/assets/mvp_architecture.png` and `demo/assets/mvp_erd.png` copied from MVP artifacts for reference
+
+**Verification**
+- Ran `npm install` in `demo`.
+- Ran `npm run build` successfully with Vite 5.4.21.
+
+#### Prompt D2 — Fix demo runtime error
+
+> Fix `Uncaught ReferenceError: id is not defined` in the React demo and use the attached shadcn/find-skills guidance.
+
+**AI output generated**
+- Fixed JSX text in `demo/src/main.jsx` so `listing:detail:{id}` is rendered as literal explanatory text instead of being parsed as a JavaScript expression.
+- Checked shadcn project status with `npx shadcn@latest info --json`; the demo is not currently initialized as a shadcn/Tailwind project (`config: null`, no installed components).
+
+**Verification**
+- Ran `npm run build` successfully after the fix.
+
+#### Prompt D3 — Expand demo data and Redis explanation
+
+> Add more data to the demo and explain how Redis is demonstrated in this repo.
+
+**AI output generated**
+- Added more seeded listings in `demo/src/main.jsx` so infinite loading has multiple realistic pages.
+- Added more districts to the filter UI.
+- Added an in-app Redis explainer panel describing search cache, detail cache, miss/hit behavior, TTLs, and invalidation.
+- Expanded `demo/README.md` with a detailed explanation of how the mock Redis layer maps to the real MVP Redis strategy.
+
+**Verification**
+- Ran `npm run build` successfully after the updates.
+
+#### Prompt D4 — Clarify detail-page cache chain
+
+> Make sure the page detail is cached too. The flow should be: FE cache miss → Redis miss → DB.
+
+**AI output generated**
+- Added frontend cache event logging for search and listing-detail requests in `demo/src/main.jsx`.
+- Added explicit listing-detail click handling that logs FE query cache hits/misses before the API/Redis layer.
+- Updated the frontend cache clear action so the same listing can be re-clicked to demonstrate Redis detail-cache hits.
+- Updated `demo/README.md` to explain the detail-page chain: TanStack Query cache → Redis `listing:detail:{id}` → PostgreSQL fallback.
+
+**Verification**
+- Ran `npm run build` successfully after the updates.
+
+#### Prompt D5 — Add MVP design benchmark for demo
+
+> Make the benchmark for the `demo` design using the MVP assumptions: 50,000 active listings, 500,000 monthly visitors, and 5,000 agents/owners.
+
+**AI output generated**
+- Added `demo/benchmark/cache-flow-benchmark.mjs`, a Node benchmark for the demo cache architecture.
+- Added `npm run benchmark` in `demo/package.json`.
+- Generated `demo/benchmark/cache-flow-report.md` with MVP assumption mapping and p95 results for 50k, 100k, and 250k synthetic listings.
+- Updated `demo/README.md` with benchmark instructions and the 50k-listing result summary.
+
+**Verification**
+- Ran `npm run benchmark` successfully in `demo`.
+- Ran `npm run build` successfully after adding the benchmark.
+- Latest 50k-listing results: search cold p95 `5.863 ms`, Redis search p95 `0.068 ms`, FE search p95 `0.034 ms`, Redis detail p95 `0.01 ms`.
+
+---
+
+## AI-Generated Outputs (Current Repository)
 
 | File | AI-generated? | Notes |
 |------|:-------------:|-------|
-| `property_filter.py` | ✅ Yes | Stub was pre-existing; all logic is AI-generated |
-| `tests/test_property_filter.py` | ✅ Yes | Entirely AI-generated |
-| `system_design.md` | ✅ Yes | Entirely AI-generated |
-| `README.md` | ✅ Yes | Entirely AI-generated |
-| `PROMPTS.md` | ✅ Yes | AI-generated, describing itself |
+| `property_filter.py` | ✅ Yes | Implemented from assignment stub/spec |
+| `tests/test_property_filter.py` | ✅ Yes | Automated test coverage for Part 1 |
+| `README.md` | ✅ Yes | Project-level guidance |
+| `PROMPTS.md` | ✅ Yes | This transparency record |
+| `part_2_mvp/mvp_design.md` | ✅ Yes | MVP-only design document |
+| `part_2_mvp/mvp_architecture.png` | ✅ Yes | MVP architecture visual |
+| `part_2_mvp/mvp_erd.png` | ✅ Yes | MVP ERD visual |
+| `part_2_mvp/redis_caching_strategy.md` | ✅ Yes | Backend caching strategy |
+| `part_2_mvp/cache-key-design-tanstack-query.md` | ✅ Yes | Frontend cache key strategy |
+| `part_2_scale/system_design.md` | ✅ Yes | Scale-phase design document |
+| `part_2_scale/architecture_diagram.png` | ✅ Yes | Scale architecture visual |
+| `part_2_scale/erd_diagram.png` | ✅ Yes | Scale ERD visual |
+| `demo/package.json` | ✅ Yes | React/Vite demo project config |
+| `demo/index.html` | ✅ Yes | Demo HTML entry point |
+| `demo/src/main.jsx` | ✅ Yes | Interactive MVP cache demo |
+| `demo/src/styles.css` | ✅ Yes | Demo visual design |
+| `demo/README.md` | ✅ Yes | Run instructions and interviewer talking track |
+| `demo/assets/mvp_architecture.png` | ✅ Yes | Copied from MVP artifact for demo reference |
+| `demo/assets/mvp_erd.png` | ✅ Yes | Copied from MVP artifact for demo reference |
 
 ---
 
-## Modifications Made by Human
+## Verification Summary
 
-**No manual edits were made to the generated source code.**
+### Part 1
+- Python tests were run and passed during generation session.
+- Validation logic and edge-case handling were reviewed against the assignment behavior.
 
-The human's role in this session was:
-1. Providing the assignment specification as the initial prompt.
-2. Typing "continue" to trigger generation of the remaining files after the
-   first turn generated the Python code and tests.
-3. Approving terminal commands proposed by the AI (installing pytest, running tests).
+### Part 2 (MVP + Scale)
+- Artifacts were checked for document/diagram consistency.
+- Architecture and ERD outputs match their corresponding markdown design documents.
+- Caching strategy is present for MVP explicitly (dedicated docs) and for Scale within system design guidance.
 
-The AI autonomously:
-- Read the pre-existing `property_filter.py` stub to understand the required signatures.
-- Identified that Python's `bool` is a subclass of `int` and explicitly excluded it
-  from valid numeric and integer fields — a non-obvious edge case.
-- Ordered validation checks so that `"missing field"` is always reported before
-  type-specific errors (consistent with the spec examples).
-- Ran `python3.12 -m pytest tests/test_property_filter.py -v` and confirmed
-  **46/46 tests passed** before proceeding to the documentation phase.
+### Demo App
+- `npm install` completed in `demo`.
+- `npm run build` completed successfully using Vite 5.4.21 on Node 20.17.0.
 
 ---
 
-## Verification Process
+## Human Involvement
 
-### Part 1 — Code
-
-1. **Static review**: The AI re-read the spec requirements and cross-checked each
-   validation rule and filter criterion against the implementation before writing tests.
-
-2. **Automated tests**: The full pytest suite was executed in the terminal:
-   ```
-   46 passed in 0.04s
-   ```
-   This includes all three smoke tests from the original `run_tests()` function,
-   plus 43 additional edge-case tests.
-
-3. **Built-in smoke test**: `python3.12 property_filter.py` prints `All tests passed`.
-
-4. **Edge cases explicitly verified**:
-   - `bool` values (`True`/`False`) rejected for `price`, `bedrooms`, `area_sqm`
-   - `None` values treated as missing field (not type error)
-   - District matching is case-insensitive across 4 casing variants
-   - Input list is not mutated (verified with `copy.deepcopy` comparison)
-   - Output `invalid_records` list is a new list (not an internal reference)
-   - `average_price` is `None` with zero matches and correct float with multiple matches
-   - Input ordering is preserved in `matching_ids`
-
-### Part 2 — System Design
-
-The system design was verified by:
-- Checking that all 15 required sections from the spec are present and non-trivial.
-- Ensuring both Mermaid diagrams use valid syntax (ERD and flowchart).
-- Confirming all 8 required database entities are present in the ERD.
-- Confirming all 5 required API endpoints are documented with request/response examples.
-- Confirming all 7 required core workflows are described.
-- Cross-checking scaling phases against realistic traffic thresholds.
-
-No external references or documentation were fetched during generation — all
-system design content is based on the model's training knowledge of distributed
-systems, PostgreSQL, Elasticsearch, NestJS, Next.js, and AWS best practices.
-
----
-
-## Honest Reflection
-
-- The implementation is entirely AI-generated with no human code review beyond
-  running the test suite and observing the pass result.
-- The system design reflects well-established industry patterns. It is
-  intentionally vendor-agnostic where possible (e.g., "RabbitMQ / SQS" rather
-  than mandating a specific vendor).
-- The `bool`-as-int edge case was identified autonomously by the AI — it is a
-  well-known Python gotcha that frequently appears in data validation contexts.
-- The 46-test count is deliberate: enough to give high confidence in all specified
-  behaviours without becoming excessive for a take-home assignment.
+- Provided assignment requirements and iterative prompts.
+- Directed generation order (MVP first, then diagram/ERD/cache/verify; same for scale).
+- Requested updates to this transparency log for accuracy and completeness.
